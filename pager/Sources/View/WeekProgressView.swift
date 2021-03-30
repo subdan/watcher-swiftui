@@ -20,16 +20,24 @@ struct WeekProgressView: View {
             }
             .font(Font.footnote)
             .padding(.horizontal, 16)
+            ProgressView(value: progress.progress, total: 1)
+                .progressViewStyle(MyProgressViewStyle())
+        }
+    }
+}
+
+struct MyProgressViewStyle: ProgressViewStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        ZStack(alignment: .leading) {
             Rectangle()
                 .fill(Color.progressBg)
-                .overlay(
-                    GeometryReader { proxy in
-                        Color.progressFg
-                            .frame(width: proxy.size.width * progress.progress)
-                    }
-                )
-                .frame(height: 4)
+            Rectangle()
+                .fill(Color.progressFg)
+                .scaleEffect(
+                    x: CGFloat(configuration.fractionCompleted!),
+                    anchor: .leading)
         }
+        .frame(height: 4)
     }
 }
 
